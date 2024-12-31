@@ -1,2 +1,2 @@
 #!/bin/bash
-python botv2.py
+python3 botv2.py
