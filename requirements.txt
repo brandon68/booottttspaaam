@@ -13,7 +13,7 @@ protobuf==4.25.3
 pyasn1-modules==0.2.8
 pyls-spyder==0.4.0
 PyQt5==5.15.10
-pywin32==305.1
+pywin32==24.3.1
 rfc3986==1.5.0
 selenium==4.27.1
 setuptools==75.1.0
