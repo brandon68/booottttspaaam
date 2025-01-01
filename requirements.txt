@@ -24,4 +24,5 @@ tzlocal==5.2
 webdriver-manager==4.0.2
 wheel==0.44.0
 wsproto==1.2.0
+flask==3.1.0
 requests-toolbelt==1.0.0
