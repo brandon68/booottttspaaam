@@ -1,8 +1,7 @@
 import telebot
+import time
 import threading
-import time
 import requests
-import time
 from spammer import (
     send_spam_deia, send_spam_slack, send_spam_emarketingsd, send_recuperar_emarkeyin,
     send_spam_mexicox, send_spam_lagranbodega, reset_password_mexicox, enviar_naturacloud, enviar_elpais,
@@ -167,37 +166,24 @@ def get_email(message):
             bot.send_message(message.chat.id, f"Error al SPAM {i + 1}: {e}")
 
     bot.send_message(message.chat.id, "¡Proceso completado! autor: @Juanper33z")
-    
 
-def auto_ping():
+
+def keep_alive():
     while True:
         try:
-            # Reemplaza con la URL de tu bot en Render
-            requests.get("https://booottttspaaam.onrender.com")
-            print("Ping exitoso")
+            requests.get("https://booottttspaaam-gocf.onrender.com")  # Reemplaza con tu URL en Render.
+            time.sleep(600)  # Envía solicitudes cada 10 minutos.
         except Exception as e:
-            print(f"Error en el ping: {e}")
-        time.sleep(300)  # Ping cada 5 minutos
+            print(f"Error en keep-alive: {e}")
 
-# Ejecutar el auto-ping en un hilo separado
-threading.Thread(target=auto_ping, daemon=True).start()
-
-# Tu código principal va aquí
-def main():
-    print("Bot está ejecutándose...")
-    # Lógica de tu bot
-    while True:
-        pass  # Simula tu tarea principal
-
-if __name__ == "__main__":
-    main()
-
+# Ejecuta el Keep-Alive en un hilo separado
+threading.Thread(target=keep_alive, daemon=True).start()
 
 
 # Ejecutar el bot
 while True:
     try:
-        bot.polling(none_stop=True, interval=0)
+        bot.set_webhook(url='https://booottttspaaam-gocf.onrender.com')
     except Exception as e:
         print(f"Error: {e}")
         time.sleep(15)
