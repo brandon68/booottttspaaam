@@ -1,7 +1,9 @@
+import os
 import telebot
 import time
 import threading
 import requests
+from flask import Flask, request
 from spammer import (
     send_spam_deia, send_spam_slack, send_spam_emarketingsd, send_recuperar_emarkeyin,
     send_spam_mexicox, send_spam_lagranbodega, reset_password_mexicox, enviar_naturacloud, enviar_elpais,
@@ -18,6 +20,9 @@ from spammer import (
 API_TOKEN = '7119344534:AAGloICq0pD5RWhDM-lQYUcKzDZ3uZ912LA'
 
 bot = telebot.TeleBot(API_TOKEN)
+
+# Crear una instancia de Flask
+app = Flask(__name__)
 
 # Diccionario para almacenar información de usuarios
 users_data = {}
@@ -47,6 +52,18 @@ def validate_key(user_key):
 # Cargar las keys al iniciar
 keys = load_keys()
 
+@app.route('/')
+def home():
+    return "Bot en funcionamiento"
+
+@app.route('/' + API_TOKEN, methods=['POST'])
+def telegram_webhook():
+    json_string = request.get_data().decode('utf-8')
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return '!', 200
+
+# Procesar la key ingresada
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, "¡Hola! Por favor ingresa tu 'key' de acceso. Adquiérela con @juanper33z.")
@@ -104,7 +121,7 @@ def get_email(message):
 
     for i in range(repeats):
         if keys[user_key] <= 0:
-            bot.send_message(message.chat.id, "Créditos agotados.Adquere mas con @juanper33z. Proceso detenido.")
+            bot.send_message(message.chat.id, "Créditos agotados. Adquiere más con @juanper33z. Proceso detenido.")
             break
 
         # Consumir 1 crédito por iteración
@@ -167,7 +184,7 @@ def get_email(message):
 
     bot.send_message(message.chat.id, "¡Proceso completado! autor: @Juanper33z")
 
-
+# Keep-alive function
 def keep_alive():
     while True:
         try:
@@ -179,11 +196,10 @@ def keep_alive():
 # Ejecuta el Keep-Alive en un hilo separado
 threading.Thread(target=keep_alive, daemon=True).start()
 
+# Establecer el webhook
+bot.remove_webhook()
+bot.set_webhook(url='https://booottttspaaam-gocf.onrender.com/' + API_TOKEN)
 
-# Ejecutar el bot
-while True:
-    try:
-        bot.set_webhook(url='https://booottttspaaam-gocf.onrender.com')
-    except Exception as e:
-        print(f"Error: {e}")
-        time.sleep(15)
+# Ejecutar el servidor Flask
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
