@@ -1,4 +1,7 @@
 import telebot
+import threading
+import time
+import requests
 import time
 from spammer import (
     send_spam_deia, send_spam_slack, send_spam_emarketingsd, send_recuperar_emarkeyin,
@@ -164,6 +167,32 @@ def get_email(message):
             bot.send_message(message.chat.id, f"Error al SPAM {i + 1}: {e}")
 
     bot.send_message(message.chat.id, "¡Proceso completado! autor: @Juanper33z")
+    
+
+def auto_ping():
+    while True:
+        try:
+            # Reemplaza con la URL de tu bot en Render
+            requests.get("https://booottttspaaam.onrender.com")
+            print("Ping exitoso")
+        except Exception as e:
+            print(f"Error en el ping: {e}")
+        time.sleep(300)  # Ping cada 5 minutos
+
+# Ejecutar el auto-ping en un hilo separado
+threading.Thread(target=auto_ping, daemon=True).start()
+
+# Tu código principal va aquí
+def main():
+    print("Bot está ejecutándose...")
+    # Lógica de tu bot
+    while True:
+        pass  # Simula tu tarea principal
+
+if __name__ == "__main__":
+    main()
+
+
 
 # Ejecutar el bot
 while True:
